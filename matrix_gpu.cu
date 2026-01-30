@@ -5,7 +5,6 @@
 
 #define BLOCK_SIZE 16
 
-
 __global__ void matrixMultiplyGPU(float *A, float *B, float *C, int N) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -21,8 +20,6 @@ __global__ void matrixMultiplyGPU(float *A, float *B, float *C, int N) {
 
 
 
-
-
 int main(int argc, char **argv) {
     int N = (argc > 1) ? atoi(argv[1]) : 1024;
     size_t size = N * N * sizeof(float);
@@ -32,19 +29,17 @@ int main(int argc, char **argv) {
     float *h_B = (float *)malloc(size);
     float *h_C = (float *)malloc(size);
 
-
     for (int i = 0; i < N * N; i++) {
         h_A[i] = rand() / (float)RAND_MAX;
         h_B[i] = rand() / (float)RAND_MAX;
     }
-
 
     float *d_A, *d_B, *d_C;
     cudaMalloc((void **)&d_A, size);
     cudaMalloc((void **)&d_B, size);
     cudaMalloc((void **)&d_C, size);
 
-    // Copy data to device
+ 
     cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
     cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
 
@@ -54,7 +49,6 @@ int main(int argc, char **argv) {
         (N + BLOCK_SIZE - 1) / BLOCK_SIZE,
         (N + BLOCK_SIZE - 1) / BLOCK_SIZE
     );
-
     // Timing with CUDA events
     cudaEvent_t start, stop;
     cudaEventCreate(&start);
@@ -70,10 +64,10 @@ int main(int argc, char **argv) {
 
     printf("Naïve CUDA execution time (N=%d): %.3f ms\n", N, milliseconds);
 
-    // Copy result back (可选，但建议保留)
+
     cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
 
-    // Cleanup
+
     cudaFree(d_A);
     cudaFree(d_B);
     cudaFree(d_C);

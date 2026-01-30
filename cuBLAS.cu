@@ -27,7 +27,6 @@ int main(int argc, char **argv)
     cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
     cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
 
-    // cuBLAS
     cublasHandle_t handle;
     cublasCreate(&handle);
 
@@ -44,7 +43,6 @@ int main(int argc, char **argv)
         &beta,
         d_C, N);
     cudaDeviceSynchronize();
-
 
     int iters = 20;
 
