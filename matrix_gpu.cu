@@ -5,7 +5,7 @@
 
 #define BLOCK_SIZE 16
 
-// ================= CUDA Kernel =================
+
 __global__ void matrixMultiplyGPU(float *A, float *B, float *C, int N) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -22,23 +22,23 @@ __global__ void matrixMultiplyGPU(float *A, float *B, float *C, int N) {
 
 
 
-// ================= Main Function =================
+
 int main(int argc, char **argv) {
     int N = (argc > 1) ? atoi(argv[1]) : 1024;
     size_t size = N * N * sizeof(float);
 
-    // Host memory
+
     float *h_A = (float *)malloc(size);
     float *h_B = (float *)malloc(size);
     float *h_C = (float *)malloc(size);
 
-    // Initialize matrices
+
     for (int i = 0; i < N * N; i++) {
         h_A[i] = rand() / (float)RAND_MAX;
         h_B[i] = rand() / (float)RAND_MAX;
     }
 
-    // Device memory
+
     float *d_A, *d_B, *d_C;
     cudaMalloc((void **)&d_A, size);
     cudaMalloc((void **)&d_B, size);
