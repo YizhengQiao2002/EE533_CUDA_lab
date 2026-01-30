@@ -34,9 +34,7 @@ int main(int argc, char **argv)
     float alpha = 1.0f;
     float beta  = 0.0f;
 
-    // ======================
-    // 1️⃣ WARM-UP（不计时）
-    // ======================
+
     cublasSgemm(handle,
         CUBLAS_OP_N, CUBLAS_OP_N,
         N, N, N,
@@ -47,9 +45,7 @@ int main(int argc, char **argv)
         d_C, N);
     cudaDeviceSynchronize();
 
-    // ======================
-    // 2️⃣ 正式计时（多次平均）
-    // ======================
+
     int iters = 20;
 
     cudaEvent_t start, stop;
